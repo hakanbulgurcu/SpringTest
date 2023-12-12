@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">
+
+    <h:head>
+        <title>Main Page</title>
+    </h:head>
+    <h:body>
+ 		<h:form>
+  		<p:growl id="msgs" showDetail="true" />
+ 			<p:dataTable id="contactsTable" var="contact" value="#{contactsBean.contactList}" 
+ 				selectionMode="single" selection="#{contactsBean.selectedContact}" rowKey="#{contact.logicalref}"
+                style="font-size:10px;width:auto"
+                resizableColumns="true" draggableColumns="true"
+                emptyMessage="No contacts found with given criteria" widgetVar="contactsWidget"
+                scrollable="true" scrollHeight="450" liveResize="true" resizeMode="expand"
+                filteredValue="#{contactsBean.filteredContacts}">
+               	
+                <f:facet name = "header">
+                        <p:inputText id="globalFilter" onkeyup="PF('contactsWidget').filter()"
+                            style="width:150px;" placeholder="Global Filter" />
+                        <h:commandLink>
+                            <p:graphicImage name="/images/pdf.png" height="20"/>
+                            <p:dataExporter type="pdf" target="contactsTable" fileName="contacts" />
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="/images/excel.png" height="20"/>
+                            <p:dataExporter type="xls" target="contactsTable" fileName="contacts" />
+                        </h:commandLink>
+    		    </f:facet>
+               	 			                	 			
+		        <p:column headerText ="Id" sortBy="#{contact.logicalref}" filterBy="#{contact.logicalref}">
+		        	<h:outputText value="#{contact.logicalref}"/>
+		        </p:column>
+		        <p:column headerText ="Kod" sortBy="#{contact.code}" filterBy="#{contact.code}"> 
+		        	<h:outputText value="#{contact.code}"/>
+		        </p:column>
+		        <p:column headerText ="Ad Soyad" sortBy="#{contact.name}" filterBy="#{contact.name}" filterMatchMode="contains"> 
+		        	<h:outputText value="#{contact.name}"/>
+		        </p:column>
+		        <p:column headerText ="Ünvan" sortBy="#{contact.title}" filterBy="#{contact.title}"> 
+		        	<h:outputText value="#{contact.title}"/>
+		        </p:column>		 		 		        
+		       	<p:column headerText ="Pozisyon" sortBy="#{contact.position}" filterBy="#{contact.position}"> 
+		       		<h:outputText value="#{contact.position}"/>
+		       	</p:column>		 		 		        
+		       	<p:column headerText ="Bölge" sortBy="#{contact.region}" filterBy="#{contact.region}"> 
+		       		<h:outputText value="#{contact.region}"/>
+		       	</p:column>		 		 		        		       		       		       
+		       	<p:column headerText ="Genel Açıklama" sortBy="#{contact.genExp}" filterBy="#{contact.genExp}"> 
+		       		<h:outputText value="#{contact.genExp}"/>
+		       	</p:column>		
+		       	
+                <f:facet name = "footer">
+	             	<p:commandButton process = "contactsTable" update ="@form:contactDetail" 
+         			 icon="ui-icon-search" value="Önizle" oncomplete="PF('contactDialog').show()"/>
+                    <h:outputText value="In total there are #{fn:length(contactsBean.filteredContacts)} cars."/>
+    		 	</f:facet>                	 			                	 		
+	    	</p:dataTable>		    	
+       		<p:dialog header="Contact Info" widgetVar="contactDialog" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="contactDetail" style="text-align:left;">
+		            <p:panelGrid  columns="2" rendered="#{not empty contactsBean.selectedContact}" columnClasses="label,value">
+		                <f:facet name="header">
+		                    <p:graphicImage name="/images/companyimage.png"/> 
+		                </f:facet>			 
+		                <h:outputText value="Firma:" /><h:outputText value="#{contactsBean.selectedContact.company.description}" />			 			 		                       
+		                <h:outputText value="Id:" /><h:outputText value="#{contactsBean.selectedContact.logicalref}" />
+		                <h:outputText value="Kod:" /><h:outputText value="#{contactsBean.selectedContact.code}" />
+		                <h:outputText value="Ad Soyad:" /><h:outputText value="#{contactsBean.selectedContact.name}" />
+		                <h:outputText value="Ünvan:" /><h:outputText value="#{contactsBean.selectedContact.title}" />			 			 
+		            </p:panelGrid>
+		        </p:outputPanel>
+		    </p:dialog>				  
+        </h:form>
+	</h:body>
+</html>

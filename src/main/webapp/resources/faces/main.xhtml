@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <title>Main Page</title>
+        <link rel="icon" type="image/png" href="http://www.hareket.com/images/favicon.png"/>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+  
+            <p:layoutUnit position="north" size="25" resizable="true" closable="true" collapsible="true">
+                <h:outputText value="North" />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="40" resizable="true" closable="true" collapsible="true">
+                <h:outputText value="South unit content." />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="200" resizable="true" closable="true" collapsible="true">
+				<h:form id="form">	 	
+				<p:growl id="messages" showDetail="true" />
+				    <p:tree id="mainTree" value="#{mainBean.root}" var="node" filterBy="#{node}"
+				    style="font-size:14px; width:185px" selectionMode="single" selection="#{mainBean.selectedNode}">	    
+ 			        <p:ajax event="select" update=":form:messages" listener="#{mainBean.onNodeSelect}" />
+					    <p:treeNode icon="ui-icon-document">
+	            			<h:outputText value="#{node}" />
+				        </p:treeNode>
+			        </p:tree>
+				</h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position = "center">
+				<ui:include src = "contactpersons.xhtml" />
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>

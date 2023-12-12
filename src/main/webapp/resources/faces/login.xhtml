@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="#{localeBean.language}"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+<f:view locale="#{localeBean.language}">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Login Page</title>
+        <link rel="icon" type="image/png" href="http://www.hareket.com/images/favicon.png"/>
+
+    </h:head>
+	<h:body>
+        <p:growl id="msg" showDetail="true"/>
+	    <h:form id="LoginForm">
+		    <p:panelGrid id="LoginGrid" columns="3" style="margin:auto;margin-top:10%">
+		        <f:facet name="header">#{msgs.getText('login.lblFormHeader')}</f:facet>
+		        <h:outputLabel for="username" value="#{msgs.getText('login.lblUsername')}"/>
+		        <p:inputText id="username" value="#{loginBean.user.code}"
+		            required="true" requiredMessage="Kullanıcı adı giriniz" label="Kullanıcı Adı" />
+		        <p:message for="username" />  
+		      
+		        <h:outputLabel for="password" value="#{msgs.getText('login.lblPassword')}" />
+		        <p:password id="password" value="#{loginBean.user.password}"
+		             required="true" requiredMessage="Şifre giriniz" label="Şifre"/>
+		        <p:message for="password" />  
+		        
+		        <f:facet name="footer">  
+                    <p:selectOneMenu value="#{localeBean.language}" >
+                        <f:selectItem itemValue="tr" itemLabel="Türkçe">
+                            <p:graphicImage value="../images/flag-tr.png"/>
+                        </f:selectItem>
+                        <f:selectItem itemValue="en" itemLabel="English" src="../images/flag-en.png"/>
+                        <p:ajax update="LoginGrid"/>
+                    </p:selectOneMenu>
+					<p:commandButton type="submit" action="#{loginBean.login()}" update="LoginForm"
+									 value="#{msgs.getText('login.lblButton')}" icon="ui-icon-check" style="margin:auto"/>
+				</f:facet>
+		    </p:panelGrid>
+	    </h:form>	    
+	</h:body>
+</f:view>
+</html>
